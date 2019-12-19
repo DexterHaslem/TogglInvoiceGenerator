@@ -1,0 +1,7 @@
+Debug/
+Release/
+packages/
+*.obj
+*.user
+*.dotsettings
+.vs/

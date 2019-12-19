@@ -1,0 +1,6 @@
+﻿namespace TogglInvoiceGenerator
+{ 
+    class Models
+    {
+    }
+}
