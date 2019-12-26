@@ -1,41 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
+using TogglAPI.Models;
 
-namespace TogglInvoiceGenerator
+namespace TogglAPI
 {
-    public class Workspace
+    public class Api
     {
-        public long Id { get; set; }
-        public string Name { get; set; }
-        public bool Rounding { get; set; }
-        public int RoundingMinutes { get; set; }
-    }
-
-
-    public class Project
-    {
-        public long Id { get; set; }
-        public long Wid { get; set; }
-        public long Cid { get; set; }
-        public string Name { get; set; }
-        public bool Billable { get; set; }
-        public bool Active { get; set; }
-    }
-
-
-    public class TogglAPI
-    {
+        private readonly string _userAgent = "dexter@haslemtech.com";
         private readonly string _apiRootURL = "https://www.toggl.com/api/v8/";
         private readonly string _reportsDetailsURL = "https://toggl.com/reports/api/v2/details";
         public string ApiKey { get; }
 
-        public TogglAPI(string apiKey)
+        public Api(string apiKey)
         {
             ApiKey = apiKey;
         }
@@ -66,6 +44,11 @@ namespace TogglInvoiceGenerator
         public Workspace[] GetWorkspaces()
         {
             return GetResponse<Workspace[]>(_apiRootURL + "workspaces");
+        }
+
+        public void GetMonthsDetailedReport(int monthNo, params long[] projectIds)
+        {
+
         }
     }
 }

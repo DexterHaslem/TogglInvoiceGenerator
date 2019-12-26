@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TogglInvoiceGenerator", "TogglInvoiceGenerator.csproj", "{9233A0BD-27A2-44E7-AFDB-3C609CFDC70D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TogglInvoiceGeneratorTests", "..\TogglInvoiceGeneratorTests\TogglInvoiceGeneratorTests.csproj", "{71704CDE-C59F-4080-A945-56F596AEBE8A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TogglAPI", "TogglAPI\TogglAPI.csproj", "{97E77CB2-607A-4D2A-822B-1C84B8D3373F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TogglAPITests", "TogglAPITests\TogglAPITests.csproj", "{17F3EE16-0A00-4A74-A4C6-61EEDB844580}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +19,14 @@ Global
 		{9233A0BD-27A2-44E7-AFDB-3C609CFDC70D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9233A0BD-27A2-44E7-AFDB-3C609CFDC70D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9233A0BD-27A2-44E7-AFDB-3C609CFDC70D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{71704CDE-C59F-4080-A945-56F596AEBE8A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{71704CDE-C59F-4080-A945-56F596AEBE8A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{71704CDE-C59F-4080-A945-56F596AEBE8A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{71704CDE-C59F-4080-A945-56F596AEBE8A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97E77CB2-607A-4D2A-822B-1C84B8D3373F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97E77CB2-607A-4D2A-822B-1C84B8D3373F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97E77CB2-607A-4D2A-822B-1C84B8D3373F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97E77CB2-607A-4D2A-822B-1C84B8D3373F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17F3EE16-0A00-4A74-A4C6-61EEDB844580}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17F3EE16-0A00-4A74-A4C6-61EEDB844580}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17F3EE16-0A00-4A74-A4C6-61EEDB844580}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17F3EE16-0A00-4A74-A4C6-61EEDB844580}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
