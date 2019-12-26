@@ -3,12 +3,15 @@ using System.Net;
 using System.Text;
 using Newtonsoft.Json;
 using TogglAPI.Models;
+using static System.String;
 
 namespace TogglAPI
 {
     public class Api
     {
         private readonly string _userAgent = "dexter@haslemtech.com";
+        // O is iso 8601 which is what toggl wants but it includes time.. 
+        private readonly string _monthFormat = "yyyy-MM-dd";
         private readonly string _apiRootURL = "https://www.toggl.com/api/v8/";
         private readonly string _reportsDetailsURL = "https://toggl.com/reports/api/v2/details";
         public string ApiKey { get; }
@@ -46,9 +49,28 @@ namespace TogglAPI
             return GetResponse<Workspace[]>(_apiRootURL + "workspaces");
         }
 
-        public void GetMonthsDetailedReport(int monthNo, params long[] projectIds)
+        public DetailReportResponse GetMonthsDetailedReport(DateTime month, long workspaceId, params long[] projectIds)
         {
+            var projectIdsStr = Join(",", projectIds);
+            var roundingStr = "on"; // TODO: make configurable
+            var since = FormatMonthBegin(month);
+            var until = FormatMonthEnd(month);
+            var url =
+                $"{_reportsDetailsURL}?workspace_id={workspaceId}&project_ids={projectIdsStr}&rounding={roundingStr}&since={since}&until={until}&user_agent={_userAgent}&page=1";
+            return GetResponse<DetailReportResponse>(url);
+        }
 
+        private string FormatMonthEnd(DateTime month)
+        {
+            var lastDay = DateTime.DaysInMonth(month.Year, month.Month);
+            var endOfMonth = new DateTime(month.Year, month.Month, lastDay);
+            return endOfMonth.ToString(_monthFormat);
+        }
+
+        private string FormatMonthBegin(DateTime month)
+        {
+            var beginningMonth = new DateTime(month.Year, month.Month, 1);
+            return beginningMonth.ToString(_monthFormat);
         }
     }
 }
