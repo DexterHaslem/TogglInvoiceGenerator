@@ -40,5 +40,10 @@ namespace TogglInvoiceGenerator
         {
             viewModel.OnProjectSelectionChanged(e);
         }
+
+        private void OnEditContactInformation(object sender, RoutedEventArgs e)
+        {
+            viewModel.OnEditContactInformation(e);
+        }
     }
 }

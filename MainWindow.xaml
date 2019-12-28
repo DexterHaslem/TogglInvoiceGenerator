@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TogglInvoiceGenerator"
         mc:Ignorable="d"
-        Title="Toggl -> Contract invoice thinger" Height="800" Width="800">
+        Title="Toggl -> Contract invoice thinger" Height="300" Width="700">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -34,9 +34,9 @@
         </StackPanel>
 
         
-        <Button Grid.Row="1" Grid.Column="0">Add Contract</Button>
-        <Button Grid.Row="1" Grid.Column="1">Edit contact information</Button>
-        <Button Grid.Row="2" Grid.Column="0" IsEnabled="{Binding DeleteContractEnabled}">Delete contract</Button>
-        <Button Click="GenerateReport" Grid.Row="2" Grid.Column="1" IsEnabled="{Binding GenerateReportEnabled}">Generate report</Button>
+        <Button Grid.Row="1" Grid.Column="0" Margin="5,2">Add Contract</Button>
+        <Button Grid.Row="1" Grid.Column="1" Click="OnEditContactInformation" Margin="5,2">Edit my contact information</Button>
+        <Button Grid.Row="2" Grid.Column="0" IsEnabled="{Binding DeleteContractEnabled}" Margin="5,2">Delete contract</Button>
+        <Button Click="GenerateReport" Grid.Row="2" Grid.Column="1" IsEnabled="{Binding GenerateReportEnabled}" Margin="5,2">Generate report</Button>
     </Grid>
 </Window>

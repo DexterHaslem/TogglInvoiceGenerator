@@ -26,6 +26,8 @@ namespace TogglInvoiceGenerator
         public ObservableCollection<Project> Projects { get; }
         public ObservableCollection<Contract> Contracts { get; }
 
+        public ContactInfo ContactInfo { get; set; }
+
         public Project SelectedProject
         {
             get => _selectedProject;
@@ -61,6 +63,9 @@ namespace TogglInvoiceGenerator
             Projects = new ObservableCollection<Project>();
 
             Contracts = new ObservableCollection<Contract>(SavedContracts.Restore());
+
+            ContactInfo = new ContactInfo();
+            
             mainWindow.Closed += (sender, args) => SavedContracts.Save(Contracts);
             // GetApiData();
         }
@@ -128,6 +133,16 @@ namespace TogglInvoiceGenerator
         {
             var detailedReport = _api.GetMonthsDetailedReport(DateTime.Now, _workspaces[0].Id, new []{selectedProject.Id});
             return detailedReport;
+        }
+
+        public void OnEditContactInformation(RoutedEventArgs routedEventArgs)
+        {
+            var editor = new ContactInfoEditor {Owner = mainWindow, ContactInfo = ContactInfo};
+            var result = editor.ShowDialog();
+            if (result == true)
+            {
+                ContactInfo = editor.ContactInfo;
+            }
         }
     }
 }
