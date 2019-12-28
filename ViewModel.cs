@@ -141,12 +141,26 @@ namespace TogglInvoiceGenerator
 
         public void OnEditContactInformation(RoutedEventArgs routedEventArgs)
         {
-            var editor = new ContactInfoEditor {Owner = mainWindow, ContactInfo = ContactInfo};
+            var editor = new ContactInfoEditorWindow {Owner = mainWindow, ContactInfo = ContactInfo};
             var result = editor.ShowDialog();
             if (result == true)
             {
                 ContactInfo = editor.ContactInfo;
             }
+        }
+
+        public void OnAddContract(RoutedEventArgs routedEventArgs)
+        {
+            var contractEditor = new ContractEditorWindow {Owner = mainWindow};
+            var result = contractEditor.ShowDialog();
+            if (result == true)
+            {
+                Contracts.Add(contractEditor.Contract);
+            }
+        }
+
+        public void OnDuplicateContract(RoutedEventArgs routedEventArgs)
+        {
         }
     }
 }

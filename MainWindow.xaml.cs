@@ -45,5 +45,15 @@ namespace TogglInvoiceGenerator
         {
             viewModel.OnEditContactInformation(e);
         }
+
+        private void OnAddContract(object sender, RoutedEventArgs e)
+        {
+            viewModel.OnAddContract(e);
+        }
+
+        private void OnDupContract(object sender, RoutedEventArgs e)
+        {
+            viewModel.OnDuplicateContract(e);
+        }
     }
 }

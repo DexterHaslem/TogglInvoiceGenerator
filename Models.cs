@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Net.Sockets;
 using System.Xml.Serialization;
 using DevExpress.DataAccess.ObjectBinding;
-using DevExpress.Office.NumberConverters;
 using TogglAPI.Models;
 
 namespace TogglInvoiceGenerator
@@ -55,10 +49,11 @@ namespace TogglInvoiceGenerator
     [Serializable]
     public class Contract
     { 
+        public string DisplayName { get; set; }
         public string PONum { get; set; }
         public DateTime PeriodOfPerformanceStart { get; set; }
         public DateTime PeriodOfPerformanceEnd { get; set; }
-        public ContactInfo AccountsPayable { get; set; }
+        public ContactInfo Contact { get; set; }
     }
 
     [Serializable]

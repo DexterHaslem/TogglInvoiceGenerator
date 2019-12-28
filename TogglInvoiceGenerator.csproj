@@ -73,6 +73,12 @@
     <Compile Include="ContactInfoEditor.xaml.cs">
       <DependentUpon>ContactInfoEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ContactInfoEditorWindow.xaml.cs">
+      <DependentUpon>ContactInfoEditorWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ContractEditorWindow.xaml.cs">
+      <DependentUpon>ContractEditorWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Report.cs">
@@ -83,6 +89,14 @@
     </Compile>
     <Compile Include="ViewModel.cs" />
     <Page Include="ContactInfoEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ContactInfoEditorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ContractEditorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

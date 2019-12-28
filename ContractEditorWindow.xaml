@@ -1,0 +1,46 @@
+﻿<Window x:Class="TogglInvoiceGenerator.ContractEditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TogglInvoiceGenerator"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner"
+        Title="ContractEditorWindow" Height="260" Width="350">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <local:ContactInfoEditor DataContext="{Binding Contract.Contact}" Grid.ColumnSpan="2"/>
+
+        <TextBlock Grid.Row="6" Grid.Column="0">PO#</TextBlock>
+        <TextBox Grid.Row="6" Grid.Column="1" x:Name="txtPONum"/>
+
+        <TextBlock Grid.Row="7" Grid.Column="0">CSA/Agreement</TextBlock>
+        <TextBox Grid.Row="7" Grid.Column="1" x:Name="txtCSA"/>
+
+        <TextBlock Grid.Row="8" Grid.Column="0">Total Period of Performance</TextBlock>
+        <TextBox Grid.Row="8" Grid.Column="1" x:Name="txtPOP"/>
+
+        <TextBlock Grid.Row="9" Grid.Column="0">Display Name</TextBlock>
+        <TextBox Grid.Row="9" Grid.Column="1" x:Name="txtDisplayName"/>
+
+        <Button Grid.Row="10" Grid.Column="0" Click="OnSave" Margin="5">Save</Button>
+        <Button Grid.Row="10" Grid.Column="1" Click="OnCancel" Margin="5">Cancel</Button>
+    </Grid>
+</Window>
