@@ -70,6 +70,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ContactInfoEditor.xaml.cs">
+      <DependentUpon>ContactInfoEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Report.cs">
@@ -79,6 +82,10 @@
       <DependentUpon>Report.cs</DependentUpon>
     </Compile>
     <Compile Include="ViewModel.cs" />
+    <Page Include="ContactInfoEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -129,9 +136,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="apikey.txt">
+    <None Include="apikey.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

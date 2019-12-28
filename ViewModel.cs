@@ -56,7 +56,7 @@ namespace TogglInvoiceGenerator
         {
             this.mainWindow = mainWindow;
 
-            _api = new Api();
+            _api = new Api(new FileInfo("apikey.txt"));
 
             Projects = new ObservableCollection<Project>();
 
