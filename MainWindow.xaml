@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TogglInvoiceGenerator"
-        mc:Ignorable="d"
-        Title="Toggl -> Contract invoice thinger" Height="300" Width="700">
+        mc:Ignorable="d" SnapsToDevicePixels="True"
+        Title="Toggl:Contract invoice generator thinger" Height="350" Width="500">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -13,33 +13,54 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition />
+            <RowDefinition /> 
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Column="0">
-            <Label>Saved contracts</Label>
-            <ListBox ItemsSource="{Binding Contracts}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedContract}">
+        <StackPanel Grid.Column="0" Margin="5">
+            <TextBlock Margin="2">Saved contracts</TextBlock>
+            <ListBox ItemsSource="{Binding Contracts}" SelectionMode="Single" Height="110"
+                     DisplayMemberPath="DisplayName" SelectedItem="{Binding SelectedContract}">
             </ListBox>
         </StackPanel>
 
-        <StackPanel Orientation="Vertical" Grid.Column="1">
-            <TextBlock>Select Toggl project to generate invoice for</TextBlock>
-            <ListBox x:Name="projectSelectionListBox" ItemsSource="{Binding Projects}" 
-                     SelectedItem="{Binding SelectedProject}"
+        <StackPanel Orientation="Vertical" Grid.Column="1" Margin="5">
+            <TextBlock Margin="2">Toggl project</TextBlock>
+            <ListBox x:Name="projectSelectionListBox" ItemsSource="{Binding Projects}" Height="110"
                      SelectionMode="Single"
-                     SelectionChanged="OnProjectSelectionChanged" DisplayMemberPath="Name">
+                     SelectedItem="{Binding SelectedProject}" DisplayMemberPath="Name">
             </ListBox>
         </StackPanel>
 
-       
-        <StackPanel Grid.Row="1" Grid.Column="0">
-            <Button Margin="5,2" Click="OnAddContract">Add Contract</Button>
-            <Button Margin="5,2" Click="OnDupContract" IsEnabled="{Binding DeleteContractEnabled}">Duplicate Contract</Button>
-        </StackPanel>
-        <Button Grid.Row="1" Grid.Column="1" Click="OnEditContactInformation" Margin="5,2">Edit my contact information</Button>
-        <Button Grid.Row="2" Grid.Column="0" IsEnabled="{Binding DeleteContractEnabled}" Margin="5,2">Delete contract</Button>
-        <Button Click="GenerateReport" Grid.Row="2" Grid.Column="1" IsEnabled="{Binding GenerateReportEnabled}" Margin="5,2">Generate Invoice</Button>
+        <TextBlock Grid.Row="1" Margin="5,2">Invoice#</TextBlock>
+        <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding InvoiceNo}"  Margin="5,2"  />
+
+        <TextBlock Grid.Row="2" Margin="5,2">PoP start (YYYY-MM)</TextBlock>
+        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding DateStr}" Margin="5,2"  />
+
+        <TextBlock Grid.Row="3" Margin="5,2">Company Name</TextBlock>
+        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding CompanyName}" Margin="5,2"  />
+
+        <TextBlock Grid.Row="4" Margin="5,2">Vendor #</TextBlock>
+        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding VendorNo}" Margin="5,2"  /> 
+      
+
+        <Button Margin="5,2" Grid.Row="5" Grid.Column="0" Click="OnAddEditContract">
+            <TextBlock Text="{Binding AddEditContractButtonText}" />
+        </Button>
+        <Button Margin="5,2" Grid.Row="5" Grid.Column="1" Click="OnDupContract" IsEnabled="{Binding DeleteContractEnabled}">Duplicate Contract</Button>
+
+        <Button Grid.Row="6" Grid.Column="1" Click="OnEditContactInformation" Margin="5,2">View/Edit contact info</Button>
+        <Button Grid.Row="6" Grid.Column="0" Click="OnDeleteContract" IsEnabled="{Binding DeleteContractEnabled}" Margin="5,2">Delete contract</Button>
+
+        <Button Click="GenerateReport" Grid.Row="7" Grid.ColumnSpan="2" IsEnabled="{Binding GenerateReportEnabled}" Margin="5,2">
+            <TextBlock FontWeight="Bold">Generate Invoice</TextBlock>
+        </Button>
     </Grid>
 </Window>

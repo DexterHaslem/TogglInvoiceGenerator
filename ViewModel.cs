@@ -24,10 +24,15 @@ namespace TogglInvoiceGenerator
         private Project _selectedProject;
         private Contract _selectedContract;
 
-        public ObservableCollection<Project> Projects { get; }
-        public ObservableCollection<Contract> Contracts { get; }
+        public ObservableCollection<Project> Projects { get; private set; }
+        public ObservableCollection<Contract> Contracts { get; private set; }
 
         public ContactInfo ContactInfo { get; set; }
+
+        public string CompanyName { get; set; }
+        public string VendorNo { get; set; }
+        public int InvoiceNo { get; set; }
+        public string DateStr { get; set; }
 
         public Project SelectedProject
         {
@@ -37,6 +42,7 @@ namespace TogglInvoiceGenerator
                 if (Equals(value, _selectedProject)) return;
                 _selectedProject = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(GenerateReportEnabled));
             }
         }
 
@@ -49,12 +55,36 @@ namespace TogglInvoiceGenerator
                 _selectedContract = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(DeleteContractEnabled));
+                OnPropertyChanged(nameof(AddEditContractButtonText));
             }
         }
 
         public bool DeleteContractEnabled => SelectedContract != null;
 
+        public string AddEditContractButtonText => SelectedContract != null ? "Edit Contract" : "Add Contract";
+
         public bool GenerateReportEnabled => mainWindow.projectSelectionListBox.SelectedItems.Count > 0;
+
+        private void CopyPersistenceToUi(Persistence persistence)
+        {
+            Contracts = new ObservableCollection<Contract>(persistence.Contracts);
+            ContactInfo = persistence.ContactInfo;
+            CompanyName = persistence.CompanyName;
+            VendorNo = persistence.VendorNo;
+            InvoiceNo = persistence.InvoiceNo;
+            DateStr = persistence.PoP;
+        }
+
+        private void CopyUiToPersistence(Persistence persistence)
+        {
+            persistence.Contracts = Contracts.ToArray();
+            persistence.ContactInfo = ContactInfo;
+            persistence.CompanyName = CompanyName;
+            persistence.VendorNo = VendorNo;
+            persistence.InvoiceNo = InvoiceNo;
+            persistence.PoP = DateStr;
+        }
+
         public ViewModel(MainWindow mainWindow)
         {
             this.mainWindow = mainWindow;
@@ -64,17 +94,19 @@ namespace TogglInvoiceGenerator
             Projects = new ObservableCollection<Project>();
 
             var persistence = Persistence.Restore();
-            Contracts = new ObservableCollection<Contract>(persistence.Contracts);
-            ContactInfo = persistence.ContactInfo;
+            CopyPersistenceToUi(persistence);
 
             mainWindow.Closed += (sender, args) =>
             {
-                new Persistence {Contracts = Contracts.ToArray(), ContactInfo = ContactInfo}.Save();
-            };
-            // GetApiData();
+                var toSave = new Persistence();
+                CopyUiToPersistence(toSave);
+                toSave.Save();
+            }; 
+            
+            GetTogglApiData();
         }
 
-        private void GetApiData()
+        private void GetTogglApiData()
         {
             Projects.Clear();
             _workspaces = _api.GetWorkspaces();
@@ -95,11 +127,6 @@ namespace TogglInvoiceGenerator
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         #endregion
-
-        public void OnProjectSelectionChanged(RoutedEventArgs routedEventArgs)
-        {
-            OnPropertyChanged(nameof(GenerateReportEnabled));
-        }
 
         public void GenerateReport(RoutedEventArgs routedEventArgs)
         {
@@ -149,11 +176,25 @@ namespace TogglInvoiceGenerator
             }
         }
 
-        public void OnAddContract(RoutedEventArgs routedEventArgs)
+        public void OnAddEditContract(RoutedEventArgs routedEventArgs)
         {
-            var contractEditor = new ContractEditorWindow {Owner = mainWindow};
+            var isEditing = SelectedContract != null;
+            // make sure to clone selected here so we can cancel
+            var contract = isEditing ? new Contract(SelectedContract) : new Contract();
+            var contractEditor = new ContractEditorWindow {Owner = mainWindow, Contract = contract };
             var result = contractEditor.ShowDialog();
-            if (result == true)
+            if (result != true) 
+                return;
+
+            if (isEditing)
+            {
+                var oldIdx = Contracts.IndexOf(SelectedContract);
+                SelectedContract = null;
+                Contracts.RemoveAt(oldIdx);
+                Contracts.Insert(oldIdx, contract);
+                SelectedContract = contract;
+            }
+            else
             {
                 Contracts.Add(contractEditor.Contract);
             }
@@ -161,6 +202,20 @@ namespace TogglInvoiceGenerator
 
         public void OnDuplicateContract(RoutedEventArgs routedEventArgs)
         {
+            Contract dupedContract = new Contract(SelectedContract);
+            var contractEditor = new ContractEditorWindow { Owner = mainWindow, Contract = dupedContract };
+            var result = contractEditor.ShowDialog();
+            if (result == true)
+            {
+                Contracts.Add(contractEditor.Contract);
+            }
+        }
+
+        public void OnDeleteContract(RoutedEventArgs routedEventArgs)
+        {
+            var selected = SelectedContract;
+            SelectedContract = null;
+            Contracts.Remove(selected);
         }
     }
 }

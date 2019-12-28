@@ -36,24 +36,24 @@ namespace TogglInvoiceGenerator
             viewModel.GenerateReport(e);
         }
 
-        private void OnProjectSelectionChanged(object sender, RoutedEventArgs e)
-        {
-            viewModel.OnProjectSelectionChanged(e);
-        }
-
         private void OnEditContactInformation(object sender, RoutedEventArgs e)
         {
             viewModel.OnEditContactInformation(e);
         }
 
-        private void OnAddContract(object sender, RoutedEventArgs e)
+        private void OnAddEditContract(object sender, RoutedEventArgs e)
         {
-            viewModel.OnAddContract(e);
+            viewModel.OnAddEditContract(e);
         }
 
         private void OnDupContract(object sender, RoutedEventArgs e)
         {
             viewModel.OnDuplicateContract(e);
+        }
+
+        private void OnDeleteContract(object sender, RoutedEventArgs e)
+        {
+            viewModel.OnDeleteContract(e);
         }
     }
 }

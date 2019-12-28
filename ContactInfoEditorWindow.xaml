@@ -6,9 +6,10 @@
         xmlns:togglInvoiceGenerator="clr-namespace:TogglInvoiceGenerator"
         Loaded="OnWindowLoaded"
         Closed="OnWindowClosed"
+        SizeToContent="Height"
         WindowStartupLocation="CenterOwner"
         mc:Ignorable="d"
-        Title="Edit contact info" Height="200" Width="400">
+        Title="Edit contact info" Height="220" Width="425">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

@@ -11,6 +11,11 @@ namespace TogglInvoiceGenerator
     {
         private const string SaveFile = "tinvoicegen.xml";
 
+        public string CompanyName { get; set; }
+        public string VendorNo { get; set; }
+        public string PoP { get; set; }
+        public int InvoiceNo { get; set; }
+
         public Contract[] Contracts { get; set; }
 
         public ContactInfo ContactInfo { get; set; }
@@ -28,18 +33,25 @@ namespace TogglInvoiceGenerator
                 return new Persistence();
             }
 
-            using (var fs = File.OpenRead(SaveFile))
+            try
             {
-                var serializer = new XmlSerializer(typeof(Persistence));
-                var restored = (Persistence)serializer.Deserialize(fs);
-                return restored;
+                using (var fs = File.OpenRead(SaveFile))
+                {
+                    var serializer = new XmlSerializer(typeof(Persistence));
+                    var restored = (Persistence) serializer.Deserialize(fs);
+                    return restored;
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                return new Persistence();
             }
         }
 
         public void Save()
         {
             var serializer = new XmlSerializer(typeof(Persistence));
-            using (var fs = File.OpenWrite(SaveFile))
+            using (var fs = File.Open(SaveFile, FileMode.Create))
             {
                 serializer.Serialize(fs, this);
             }
@@ -51,9 +63,29 @@ namespace TogglInvoiceGenerator
     { 
         public string DisplayName { get; set; }
         public string PONum { get; set; }
-        public DateTime PeriodOfPerformanceStart { get; set; }
-        public DateTime PeriodOfPerformanceEnd { get; set; }
+        public string CSA { get; set; }
+        public string PeriodOfPerformance { get; set; }
         public ContactInfo Contact { get; set; }
+
+        public Contract()
+        {
+            DisplayName = "";
+            PONum = "";
+            CSA = "";
+            PeriodOfPerformance = "";
+            Contact = new ContactInfo();
+        }
+
+        public Contract(Contract other) : this()
+        {
+            if (other == null)
+                return;
+            DisplayName = other.DisplayName;
+            PONum = other.PONum;
+            CSA = other.CSA;
+            PeriodOfPerformance = other.PeriodOfPerformance;
+            Contact = new ContactInfo(other.Contact);
+        }
     }
 
     [Serializable]
@@ -68,6 +100,22 @@ namespace TogglInvoiceGenerator
         public string Email { get; set; }
 
         public string Phone { get; set; }
+
+        public ContactInfo()
+        {
+        }
+
+        public ContactInfo(ContactInfo other)
+        {
+            if (other == null)
+                return;
+            Line1 = other.Line1;
+            Line2 = other.Line2;
+            Line3 = other.Line3;
+            Line4 = other.Line4;
+            Email = other.Email;
+            Phone = other.Phone;
+        }
     }
 
     [HighlightedClass]
