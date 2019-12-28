@@ -78,7 +78,6 @@
     <Compile Include="Report.Designer.cs">
       <DependentUpon>Report.cs</DependentUpon>
     </Compile>
-    <Compile Include="TogglAPI.cs" />
     <Compile Include="ViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -123,6 +122,16 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="TogglAPI\TogglAPI.csproj">
+      <Project>{97e77cb2-607a-4d2a-822b-1c84b8d3373f}</Project>
+      <Name>TogglAPI</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="apikey.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

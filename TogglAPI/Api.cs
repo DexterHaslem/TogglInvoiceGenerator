@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Text;
 using Newtonsoft.Json;
@@ -19,6 +20,11 @@ namespace TogglAPI
         public Api(string apiKey)
         {
             ApiKey = apiKey;
+        }
+
+        public Api(FileInfo apiKeyFile)
+        {
+            ApiKey = File.ReadAllText(apiKeyFile.FullName).Trim();
         }
 
         private WebClient AuthedWebClient()
@@ -49,7 +55,7 @@ namespace TogglAPI
             return GetResponse<Workspace[]>(_apiRootURL + "workspaces");
         }
 
-        public DetailReportResponse GetMonthsDetailedReport(DateTime month, long workspaceId, params long[] projectIds)
+        public DetailReportResponse GetMonthsDetailedReport(DateTime month, long workspaceId, long[] projectIds)
         {
             var projectIdsStr = Join(",", projectIds);
             var roundingStr = "on"; // TODO: make configurable

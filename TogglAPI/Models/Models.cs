@@ -19,6 +19,7 @@ namespace TogglAPI.Models
         public string Name { get; set; }
         public bool Billable { get; set; }
         public bool Active { get; set; }
+        public double Rate { get; set; }
     }
 
     public class ReportTimeEntry
@@ -37,12 +38,31 @@ namespace TogglAPI.Models
 
         public DateTime End { get; set; }
 
-        public long Dur { get; set; }
+        public int Dur { get; set; }
 
         public bool IsBillable { get; set; }
 
-        public long Billable { get; set; }
+        public double Billable { get; set; }
+        public string BillableStr => Billable.ToString("##.00");
+
         public string Cur { get; set; }
+
+        // dont calculate, we want rounded (eg not return (End - Start).TotalHours)
+        public double DurationHrs => new TimeSpan(0, 0, 0, 0, Dur).TotalHours;
+
+        public string TimeStr
+        {
+            get
+            {
+                var dateChunk = Start.ToString("d");
+                var startTime = Start.ToString("HH:mm");
+                var endTime = End.ToString("HH:mm");
+                return $"{dateChunk} {startTime} - {endTime}";
+            }
+        }
+
+        public string StartStr => Start.ToString("d t");
+        public string EndStr => End.ToString("d t");
     }
 
     public class CurrencyAmount

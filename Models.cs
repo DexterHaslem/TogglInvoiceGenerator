@@ -1,10 +1,61 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Net.Sockets;
+using System.Xml.Serialization;
 using DevExpress.DataAccess.ObjectBinding;
+using DevExpress.Office.NumberConverters;
+using TogglAPI.Models;
 
 namespace TogglInvoiceGenerator
 {
-    internal class ContactInfo
+    [Serializable]
+    public class SavedContracts
+    {
+        private static readonly string ContractsFile = "contracts.xml";
+
+        //[XmlArray("Contracts")]
+        public Contract[] Contracts { get; set; }
+        public DateTime LastUpdated { get; set; }
+
+        public static Contract[] Restore()
+        {
+            if (!File.Exists(ContractsFile))
+            {
+                return new Contract[0];
+            }
+
+            using (var fs = File.OpenRead(ContractsFile))
+            {
+                var serializer = new XmlSerializer(typeof(SavedContracts));
+                var restored = (SavedContracts) serializer.Deserialize(fs);
+                return restored.Contracts;
+            }
+        }
+
+        public static void Save(IEnumerable<Contract> contracts)
+        {
+            var toSave = new SavedContracts{Contracts = contracts.ToArray()};
+            var serializer = new XmlSerializer(typeof(SavedContracts));
+            using (var fs = File.OpenWrite(ContractsFile))
+            {
+                serializer.Serialize(fs, toSave);
+            }
+        }
+    }
+
+    [Serializable]
+    public class Contract
+    { 
+        public string PONum { get; set; }
+        public DateTime PeriodOfPerformanceStart { get; set; }
+        public DateTime PeriodOfPerformanceEnd { get; set; }
+        public ContactInfo AccountsPayable { get; set; }
+    }
+
+    public class ContactInfo
     {
         // dont try to be clever here, we just want simple bunches of lines
         public string Line1 { get; set; }
@@ -33,10 +84,19 @@ namespace TogglInvoiceGenerator
 
         public double TotalHoursBilled { get; set; }
         public double HourlyRate { get; set; }
-        public double HourTotalCost => TotalHoursBilled * HourlyRate;
+        public double HourTotalCost { get; set; }// => TotalHoursBilled * HourlyRate;
 
         public string CustomFooterText1 { get; set; }
         public string CustomFooterText2 { get; set; }
+
+        public ReportTimeEntry[] TimeEntries { get; set; }
+
+        public ReportDataSource(Contract selectedContract, Project project, DetailReportResponse detailReport) : this()
+        {
+            HourTotalCost = detailReport.TotalCurrencies[0].Amount;
+            HourlyRate = project.Rate;
+            TimeEntries = detailReport.Data;
+        }
 
         public ReportDataSource()
         {

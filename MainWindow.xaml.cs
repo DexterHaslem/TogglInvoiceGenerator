@@ -24,39 +24,21 @@ namespace TogglInvoiceGenerator
     /// </summary>
     public partial class MainWindow : Window
     {
+        private ViewModel viewModel;
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new ViewModel(this);
+            DataContext = viewModel = new ViewModel(this);
         }
 
-        private void PreviewTest(object sender, RoutedEventArgs e)
+        private void GenerateReport(object sender, RoutedEventArgs e)
         {
-            /* pdf */
-            //const string testFile = "invoice.pdf";
-            //PdfExportOptions options = new PdfExportOptions();
-            //options.PdfACompatibility = PdfACompatibility.PdfA1b;
-            
+            viewModel.GenerateReport(e);
+        }
 
-            /* docx */
-            const string testFile = "invoice.docx";
-            var docxExportOptions = new DocxExportOptions();
-            docxExportOptions.AllowFloatingPictures = true;
-            docxExportOptions.RasterizeImages = false;
-            docxExportOptions.RasterizationResolution = 96;
-            docxExportOptions.KeepRowHeight = true;
-
-            if (File.Exists(testFile))
-            {
-                File.Delete(testFile);
-            }
-            var report = new Report();
-            ((ObjectDataSource)report.DataSource).DataSource = new ReportDataSource();
-            report.CreateDocument();
-
-            //report.ExportToPdf(testFile, options);
-            report.ExportToDocx(testFile, docxExportOptions);
-            Process.Start(testFile);
+        private void OnProjectSelectionChanged(object sender, RoutedEventArgs e)
+        {
+            viewModel.OnProjectSelectionChanged(e);
         }
     }
 }
