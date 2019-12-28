@@ -8,7 +8,7 @@
         Closed="OnWindowClosed"
         WindowStartupLocation="CenterOwner"
         mc:Ignorable="d"
-        Title="ContactInfoEditor" Height="220" Width="400">
+        Title="Edit contact info" Height="200" Width="400">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

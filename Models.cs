@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
@@ -12,36 +13,41 @@ using TogglAPI.Models;
 namespace TogglInvoiceGenerator
 {
     [Serializable]
-    public class SavedContracts
+    public class Persistence
     {
-        private static readonly string ContractsFile = "contracts.xml";
+        private const string SaveFile = "tinvoicegen.xml";
 
-        //[XmlArray("Contracts")]
         public Contract[] Contracts { get; set; }
-        public DateTime LastUpdated { get; set; }
 
-        public static Contract[] Restore()
+        public ContactInfo ContactInfo { get; set; }
+
+        public Persistence()
         {
-            if (!File.Exists(ContractsFile))
+            Contracts = new Contract[0];
+            ContactInfo = new ContactInfo();
+        }
+
+        public static Persistence Restore()
+        {
+            if (!File.Exists(SaveFile))
             {
-                return new Contract[0];
+                return new Persistence();
             }
 
-            using (var fs = File.OpenRead(ContractsFile))
+            using (var fs = File.OpenRead(SaveFile))
             {
-                var serializer = new XmlSerializer(typeof(SavedContracts));
-                var restored = (SavedContracts) serializer.Deserialize(fs);
-                return restored.Contracts;
+                var serializer = new XmlSerializer(typeof(Persistence));
+                var restored = (Persistence)serializer.Deserialize(fs);
+                return restored;
             }
         }
 
-        public static void Save(IEnumerable<Contract> contracts)
+        public void Save()
         {
-            var toSave = new SavedContracts{Contracts = contracts.ToArray()};
-            var serializer = new XmlSerializer(typeof(SavedContracts));
-            using (var fs = File.OpenWrite(ContractsFile))
+            var serializer = new XmlSerializer(typeof(Persistence));
+            using (var fs = File.OpenWrite(SaveFile))
             {
-                serializer.Serialize(fs, toSave);
+                serializer.Serialize(fs, this);
             }
         }
     }
@@ -55,6 +61,7 @@ namespace TogglInvoiceGenerator
         public ContactInfo AccountsPayable { get; set; }
     }
 
+    [Serializable]
     public class ContactInfo
     {
         // dont try to be clever here, we just want simple bunches of lines

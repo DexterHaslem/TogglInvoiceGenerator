@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using DevExpress.DataAccess.ObjectBinding;
@@ -62,11 +63,14 @@ namespace TogglInvoiceGenerator
 
             Projects = new ObservableCollection<Project>();
 
-            Contracts = new ObservableCollection<Contract>(SavedContracts.Restore());
+            var persistence = Persistence.Restore();
+            Contracts = new ObservableCollection<Contract>(persistence.Contracts);
+            ContactInfo = persistence.ContactInfo;
 
-            ContactInfo = new ContactInfo();
-            
-            mainWindow.Closed += (sender, args) => SavedContracts.Save(Contracts);
+            mainWindow.Closed += (sender, args) =>
+            {
+                new Persistence {Contracts = Contracts.ToArray(), ContactInfo = ContactInfo}.Save();
+            };
             // GetApiData();
         }
 
