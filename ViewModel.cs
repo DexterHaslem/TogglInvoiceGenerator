@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -128,6 +129,11 @@ namespace TogglInvoiceGenerator
         }
         #endregion
 
+        private DateTime GetPoPDate()
+        {
+            return DateTime.ParseExact(DateStr, "M/yyyy", CultureInfo.InvariantCulture);
+        }
+
         public void GenerateReport(RoutedEventArgs routedEventArgs)
         {
             var selectedProject = (Project)mainWindow.projectSelectionListBox.SelectedItems[0];
@@ -150,9 +156,28 @@ namespace TogglInvoiceGenerator
                 File.Delete(testFile);
             }
 
-            var selectedContract = new Contract();
             var report = new Report();
-            ((ObjectDataSource)report.DataSource).DataSource = new ReportDataSource(selectedContract, selectedProject, detailReport);
+            // TODO: abstract filling out report info
+            var rds =  new ReportDataSource(SelectedContract, selectedProject, detailReport);
+            rds.VendorNum = VendorNo;
+            rds.From = ContactInfo;
+            var pop = GetPoPDate();
+            var lastDay = DateTime.DaysInMonth(pop.Year, pop.Month);
+            var endOfMonth = new DateTime(pop.Year, pop.Month, lastDay);
+
+            rds.PeriodOfPerformance = $"{pop.ToShortDateString()} - {endOfMonth.ToShortDateString()}";
+            rds.CompanyName = CompanyName;
+            rds.InvoiceNum = InvoiceNo.ToString(CultureInfo.CurrentCulture);
+
+            // TODO: expose
+            rds.CustomFooterText1 = "Please remit payment via ACH agreement";
+            rds.CustomFooterText2 = "";
+
+            // convert total billable ms to hours, this will be rounded amount from api
+            rds.TotalHoursBilled = new TimeSpan(0, 0, 0, 0, (int) detailReport.TotalBillable).TotalHours;
+
+            ((ObjectDataSource) report.DataSource).DataSource = rds;
+
             report.CreateDocument();
 
             //report.ExportToPdf(testFile, options);
@@ -162,7 +187,8 @@ namespace TogglInvoiceGenerator
 
         private DetailReportResponse GetDetailReport(Project selectedProject)
         {
-            var detailedReport = _api.GetMonthsDetailedReport(DateTime.Now, _workspaces[0].Id, new []{selectedProject.Id});
+            var pop = GetPoPDate();
+            var detailedReport = _api.GetMonthsDetailedReport(pop, _workspaces[0].Id, new []{selectedProject.Id});
             return detailedReport;
         }
 

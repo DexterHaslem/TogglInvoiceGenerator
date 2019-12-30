@@ -65,7 +65,6 @@ namespace TogglAPI
                 $"{_reportsDetailsURL}?workspace_id={workspaceId}&project_ids={projectIdsStr}&rounding={roundingStr}&since={since}&until={until}&user_agent={_userAgent}&page=1";
             return GetResponse<DetailReportResponse>(url);
         }
-
         private string FormatMonthEnd(DateTime month)
         {
             var lastDay = DateTime.DaysInMonth(month.Year, month.Month);

@@ -41,7 +41,7 @@
         <TextBlock Grid.Row="1" Margin="5,2">Invoice#</TextBlock>
         <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding InvoiceNo}"  Margin="5,2"  />
 
-        <TextBlock Grid.Row="2" Margin="5,2">PoP start (YYYY-MM)</TextBlock>
+        <TextBlock Grid.Row="2" Margin="5,2">PoP start (MM/YYYY)</TextBlock>
         <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding DateStr}" Margin="5,2"  />
 
         <TextBlock Grid.Row="3" Margin="5,2">Company Name</TextBlock>

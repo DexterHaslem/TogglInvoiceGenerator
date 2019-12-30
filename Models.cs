@@ -122,15 +122,15 @@ namespace TogglInvoiceGenerator
     internal class ReportDataSource
     {
         public ContactInfo From { get; set; }
-        public ContactInfo To { get; set; }
-        
         public string InvoiceNum { get; set; }
         public string InvoiceDate { get; set; }
-        public string ContractPONum { get; set; }
         public string VendorNum { get; set; }
 
+        public string CompanyName { get; set; }
+
+        public Contract Contract { get; set; }
+
         public string PeriodOfPerformance { get; set; }
-        public string ContractPeriodOfPerformance { get; set; }
 
         public double TotalHoursBilled { get; set; }
         public double HourlyRate { get; set; }
@@ -141,8 +141,10 @@ namespace TogglInvoiceGenerator
 
         public ReportTimeEntry[] TimeEntries { get; set; }
 
-        public ReportDataSource(Contract selectedContract, Project project, DetailReportResponse detailReport) : this()
+        public ReportDataSource(Contract contract, Project project, DetailReportResponse detailReport) : this()
         {
+            Contract = contract;
+            TotalHoursBilled = detailReport.TotalBillable;
             HourTotalCost = detailReport.TotalCurrencies[0].Amount;
             HourlyRate = project.Rate;
             TimeEntries = detailReport.Data;
@@ -150,34 +152,7 @@ namespace TogglInvoiceGenerator
 
         public ReportDataSource()
         {
-            From = new ContactInfo
-            {
-                Email = "foo@barf.com",
-                Phone = "970-633-0324",
-                Line1 = "Line 1",
-                Line2 = "Line 2",
-                Line3 = "Line 3",
-                Line4 = "Line 4",
-            };
-
-            To = new ContactInfo
-            {
-                Email = "to@foobar.com",
-                Phone = "123445124111",
-                Line1 = "Line 1",
-                Line2 = "Line 2",
-                Line3 = "Line 3",
-                Line4 = "Line 4",
-            };
-
-            VendorNum = "HAS007";
             InvoiceDate = DateTime.Now.Date.ToShortDateString();
-            ContractPONum = "PO1234";
-            PeriodOfPerformance = "12/1/ - 12/31/2019";
-            ContractPeriodOfPerformance = "1/1/2019 - 12/31/2019";
-            CustomFooterText1 = "Footer text 1";
-            CustomFooterText2 = "Footer text 2";
-            InvoiceNum = "1004";
         }
     }
 }

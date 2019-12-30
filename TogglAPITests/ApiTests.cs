@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TogglAPI;
 using System;
+using System.Globalization;
 using System.IO;
 
 namespace TogglAPITests
