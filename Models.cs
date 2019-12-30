@@ -128,6 +128,7 @@ namespace TogglInvoiceGenerator
 
         public string CompanyName { get; set; }
 
+        public Project Project { get; set; }
         public Contract Contract { get; set; }
 
         public string PeriodOfPerformance { get; set; }
